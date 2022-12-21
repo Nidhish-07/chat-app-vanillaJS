@@ -13,7 +13,12 @@ form.addEventListener("submit", (event) => {
 
     const message = event.target.elements.message.value
 
-    socket.emit("sendMessage", message)
+    socket.emit("sendMessage", message, (error) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log(`Message is delivered`);
+    })
 })
 
 
@@ -27,7 +32,9 @@ locationButton.addEventListener("click", (event) => {
     navigator.geolocation.getCurrentPosition((position) => {
         const { latitude: lat, longitude: lng } = position.coords
 
-        socket.emit("sendLocation", { lat, lng })
+        socket.emit("sendLocation", { lat, lng },()=>{
+            console.log("Location shared");
+        })
     })
 })
 
